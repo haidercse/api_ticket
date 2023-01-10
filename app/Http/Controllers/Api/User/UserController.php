@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     use ResponseTrait;
+    public function getAuthenticateUser()
+    {
+        try {
+            $user = User::where('id', auth()->user()->id)->first();
+            return $this->successResponse($user, 'All Client get Successfully');
+        } catch (Exception $e) {
+            return $this->errorResponse(null, $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
     public function getAllClient()
     {
         try {
@@ -29,7 +38,7 @@ class UserController extends Controller
     {
         try {
             $clients = User::whereHas('roles', function ($query) {
-                $query->where('name','!=', 'Client');
+                $query->where('name', '!=', 'Client');
             });
             return $this->successResponse($clients, 'All Role Without Client get Successfully');
         } catch (Exception $e) {
@@ -60,20 +69,22 @@ class UserController extends Controller
         return $this->successResponse($user, 'Get User Data Successfully');
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $validateUser = Validator::make($request->all(), 
-        [
-            'name'              => 'required|max:50|min:3',
-            'email'             => 'required|unique:users,email,'.$id,
-            'registration_date' => 'nullable|date',
-            'username'          => 'required|unique:users,username,'.$id,
-            'status'            => 'required',
-            'product_id'        => 'nullable',
-            'organization_id'   => 'nullable',
-        ]);
+        $validateUser = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:50|min:3',
+                'email' => 'required|unique:users,email,' . $id,
+                'registration_date' => 'nullable|date',
+                'username' => 'required|unique:users,username,' . $id,
+                'status' => 'required',
+                'product_id' => 'nullable',
+                'organization_id' => 'nullable',
+            ]
+        );
 
-        if($validateUser->fails()){
+        if ($validateUser->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => 'validation error',
@@ -114,7 +125,7 @@ class UserController extends Controller
     public function passwordUpdate(Request $request)
     {
         $auth_id = auth()->user()->id;
-        $user =  User::find($auth_id);
+        $user = User::find($auth_id);
         $user = $user->update([
             'password' => $request->password,
         ]);

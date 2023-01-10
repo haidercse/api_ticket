@@ -33,6 +33,7 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
   
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+  
 
     Route::prefix('organization')->group(
         function () {
@@ -77,6 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('user')->group(
         function () {
+            Route::get('/auth-user', [UserController::class, 'getAuthenticateUser']);
             Route::get('/client', [UserController::class, 'getAllClient']);
             Route::get('/all-role', [UserController::class, 'getAllWithoutClient']);
             Route::post('create', [UserController::class, 'store']);
