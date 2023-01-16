@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'registration']);
     Route::put('/update/{id}', [AuthController::class, 'update']);
@@ -78,7 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('user')->group(
         function () {
-            Route::get('/auth-user', [UserController::class, 'getAuthenticateUser']);
+            Route::get('/auth', [UserController::class, 'getAuthenticateUser']);
             Route::get('/client', [UserController::class, 'getAllClient']);
             Route::get('/all-role', [UserController::class, 'getAllWithoutClient']);
             Route::post('create', [UserController::class, 'store']);

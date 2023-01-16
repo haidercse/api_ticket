@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class OrganizationController extends Controller
 {
     use ResponseTrait;
+
     public function index()
     {
         try {
@@ -35,7 +36,7 @@ class OrganizationController extends Controller
         );
 
         if ($validateData->fails()) {
-            return $this->errorResponse($validateData->errors(), 'validation error', JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->errorResponse($validateData->errors(), 'validation error', JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $organization = new Organization();
@@ -66,7 +67,7 @@ class OrganizationController extends Controller
         );
 
         if ($validateData->fails()) {
-            return $this->errorResponse($validateData->errors(), 'validation error', JsonResponse::HTTP_UNAUTHORIZED);
+            return $this->errorResponse($validateData->errors(), 'validation error', JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $organization = Organization::find($id);

@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     use ResponseTrait;
+
     public function getAuthenticateUser()
     {
         try {
             $user = User::where('id', auth()->user()->id)->first();
-            return $this->successResponse($user, 'All Client get Successfully');
+            return $this->successResponse($user, 'Authinticate user get Successfully');
         } catch (Exception $e) {
             return $this->errorResponse(null, $e->getMessage(), JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
